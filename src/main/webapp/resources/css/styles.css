@@ -1,0 +1,43 @@
+/* 
+   Estilos adicionales para el Directorio de Autores
+   Desafio 2 - SPP901
+*/
+
+/* Hacer que los inputs se vean igual que en el mockup */
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.form-control:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 0 0.15rem rgba(108, 117, 125, 0.25);
+}
+
+/* Tabla mas limpia */
+.table td, .table th {
+    font-size: 0.85rem;
+    vertical-align: middle;
+}
+
+/* Fila de la tabla que se hover */
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* Encabezados de tabla en gris claro */
+.table thead tr th {
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* El select del genero que tenga la misma altura que los otros inputs */
+select.form-control {
+    height: calc(1.5em + .5rem + 2px);
+}
+
+/* Ajuste para los mensajes de error de JSF */
+.errorMsg {
+    color: #dc3545;
+    font-size: 0.8rem;
+}

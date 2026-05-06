@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Configuracion del DataSource para Apache Tomcat
+    Este archivo va en la carpeta META-INF del proyecto
+    Define la conexion a la base de datos MySQL usando JNDI
+-->
+<Context>
+    <Resource 
+        name="jdbc/AuthorsDB"
+        auth="Container"
+        type="javax.sql.DataSource"
+        maxActive="10"
+        maxIdle="5"
+        maxWait="10000"
+        username="root"
+        password=""
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/Authors?useSSL=false&amp;serverTimezone=UTC"/>
+</Context>

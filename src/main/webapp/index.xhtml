@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Directorio de Autores</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body { background-color: #f4f6f9; font-family: Arial, sans-serif; }
+        .main-container { max-width: 900px; margin: 30px auto; padding: 0 15px; }
+        .card-header-custom { background-color: #343a40; color: white; padding: 12px 20px; font-size: 1.4rem; font-weight: bold; border-radius: 5px 5px 0 0; }
+        .section-title { font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; color: #6c757d; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 5px; }
+        .btn-add { background-color: #343a40; color: white; border: none; padding: 8px 20px; border-radius: 4px; cursor: pointer; }
+        .btn-add:hover { background-color: #23272b; color: white; }
+        .validation-area { min-height: 70px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 10px; font-size: 0.9rem; }
+        .table thead th { background-color: #f1f3f5; font-size: 0.85rem; color: #495057; }
+        .table td { font-size: 0.85rem; vertical-align: middle; }
+        .btn-edit { background-color: #6c757d; color: white; font-size: 0.75rem; padding: 3px 8px; border: none; border-radius: 3px; margin-right: 2px; cursor: pointer; }
+        .btn-delete { background-color: #6c757d; color: white; font-size: 0.75rem; padding: 3px 8px; border: none; border-radius: 3px; cursor: pointer; }
+        .btn-edit:hover { background-color: #5a6268; }
+        .btn-delete:hover { background-color: #dc3545; }
+        .btn-count { background-color: #343a40; color: white; font-size: 0.85rem; padding: 5px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        .count-area { display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding: 10px 0; }
+        .count-text { font-size: 0.9rem; color: #6c757d; font-style: italic; }
+        .form-label-small { font-size: 0.85rem; color: #495057; margin-bottom: 3px; display: block; }
+        .search-box { font-size: 0.85rem; padding: 4px 8px; border: 1px solid #ced4da; border-radius: 4px; width: 180px; }
+        .filter-select { font-size: 0.85rem; padding: 4px 8px; border: 1px solid #ced4da; border-radius: 4px; }
+    </style>
+</h:head>
+
+<h:body>
+<div class="main-container">
+    <div class="card shadow-sm">
+        <div class="card-header-custom">Directorio de Autores</div>
+        <div class="card-body">
+
+            <h:form id="mainForm">
+
+                <div class="section-title">Formulario de Autores</div>
+
+                <div class="form-group">
+                    <label class="form-label-small">Nombre del Autor:</label>
+                    <h:inputText id="authorName"
+                                 value="#{authorBean.authorName}"
+                                 styleClass="form-control form-control-sm"
+                                 placeholder="Nombre" />
+                    <h:message for="authorName" styleClass="text-danger small" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label-small">Fecha de Nacimiento:</label>
+                    <h:inputText id="birthdate"
+                                 value="#{authorBean.birthdate}"
+                                 styleClass="form-control form-control-sm"
+                                 placeholder="MM/dd/yyyy">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:message for="birthdate" styleClass="text-danger small" />
+                    <small class="text-muted">Formato: MM/DD/AAAA (ej: 01/31/1990)</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label-small">Teléfono:</label>
+                    <h:inputText id="phone"
+                                 value="#{authorBean.phone}"
+                                 styleClass="form-control form-control-sm"
+                                 placeholder="####-####">
+                        <f:validator validatorId="SVPhoneValidator" />
+                    </h:inputText>
+                    <h:message for="phone" styleClass="text-danger small" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label-small">Género:</label>
+                    <h:selectOneMenu id="genre"
+                                     value="#{authorBean.selectedGenreId}"
+                                     styleClass="form-control form-control-sm">
+                        <f:selectItem itemValue="0" itemLabel="Select" />
+                        <f:selectItems value="#{authorBean.genreList}"
+                                       var="g"
+                                       itemValue="#{g.id}"
+                                       itemLabel="#{g.name}" />
+                    </h:selectOneMenu>
+                    <h:message for="genre" styleClass="text-danger small" />
+                </div>
+
+                <div class="text-center mb-3">
+                    <h:commandButton value="AGREGAR"
+                                     action="#{authorBean.saveAuthor}"
+                                     styleClass="btn-add" />
+                </div>
+
+                <div class="section-title">Validaciones</div>
+                <h:panelGroup id="validationPanel">
+                    <div class="validation-area">
+                        <h:outputText value="#{authorBean.validationMessage}" />
+                    </div>
+                </h:panelGroup>
+
+                <br />
+                <hr />
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="section-title mb-0">Directorio de Autores</div>
+                    <div class="d-flex" style="gap: 8px; align-items: center;">
+                        <h:inputText id="searchInput"
+                                     value="#{authorBean.searchText}"
+                                     styleClass="search-box"
+                                     placeholder="Buscar...">
+                            <f:ajax event="keyup"
+                                    render="authorTablePanel"
+                                    execute="@form" />
+                        </h:inputText>
+                        <h:selectOneMenu id="genreFilter"
+                                         value="#{authorBean.filterGenreId}"
+                                         styleClass="filter-select">
+                            <f:selectItem itemValue="0" itemLabel="Género" />
+                            <f:selectItems value="#{authorBean.genreList}"
+                                           var="g"
+                                           itemValue="#{g.id}"
+                                           itemLabel="#{g.name}" />
+                            <f:ajax event="change"
+                                    listener="#{authorBean.filterByGenre}"
+                                    render="authorTablePanel countPanel"
+                                    execute="@this" />
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <h:panelGroup id="authorTablePanel">
+                    <table class="table table-bordered table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID Autor</th>
+                                <th>Nombre Autor</th>
+                                <th>Teléfono</th>
+                                <th>Fecha Nacimiento</th>
+                                <th>Género Literario</th>
+                                <th>Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{authorBean.filteredAuthors}" var="author">
+                                <tr>
+                                    <td><h:outputText value="#{author.id}" /></td>
+                                    <td><h:outputText value="#{author.name}" /></td>
+                                    <td><h:outputText value="#{author.phone}" /></td>
+                                    <td>
+                                        <h:outputText value="#{author.birthdate}">
+                                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                                        </h:outputText>
+                                    </td>
+                                    <td><h:outputText value="#{author.genre.name}" /></td>
+                                    <td>
+                                        <h:commandButton value="EDITAR"
+                                                         styleClass="btn-edit"
+                                                         action="#{authorBean.editAuthor(author)}" />
+                                        <h:commandButton value="BORRAR"
+                                                         styleClass="btn-delete"
+                                                         action="#{authorBean.deleteAuthor(author.id)}"
+                                                         onclick="return confirm('Seguro que desea borrar este autor?')" />
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                        </tbody>
+                    </table>
+                </h:panelGroup>
+
+                <h:panelGroup id="countPanel">
+                    <div class="count-area">
+                        <span class="count-text">
+                            Número de autores: <h:outputText value="#{authorBean.authorCount}" />
+                        </span>
+                        <h:commandButton value="CONTAR"
+                                         styleClass="btn-count"
+                                         action="#{authorBean.countAuthors}" />
+                    </div>
+                </h:panelGroup>
+
+            </h:form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</h:body>
+</html>
